@@ -211,6 +211,10 @@ module ActiveRecord
       alias supports_insert_on_duplicate_update? supports_insert_on_conflict?
       alias supports_insert_conflict_target? supports_insert_on_conflict?
 
+      def supports_virtual_columns?
+        database_version >= 120_000 # >= 12.0
+      end
+
       def index_algorithms
         { concurrently: "CONCURRENTLY" }
       end
@@ -820,7 +824,8 @@ module ActiveRecord
           query(<<~SQL, "SCHEMA")
               SELECT a.attname, format_type(a.atttypid, a.atttypmod),
                      pg_get_expr(d.adbin, d.adrelid), a.attnotnull, a.atttypid, a.atttypmod,
-                     c.collname, col_description(a.attrelid, a.attnum) AS comment
+                     c.collname, col_description(a.attrelid, a.attnum) AS comment,
+                     #{supports_virtual_columns? ? 'attgenerated' : quote('')} as attgenerated
                 FROM pg_attribute a
                 LEFT JOIN pg_attrdef d ON a.attrelid = d.adrelid AND a.attnum = d.adnum
                 LEFT JOIN pg_type t ON a.atttypid = t.oid
