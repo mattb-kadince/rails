@@ -10,6 +10,16 @@
     *Eugene Kenny*
 
 
+## Rails 6.0.3.6 (March 26, 2021) ##
+
+*   No changes.
+
+
+## Rails 6.0.3.5 (February 10, 2021) ##
+
+*   No changes.
+
+
 ## Rails 6.0.3.4 (October 07, 2020) ##
 
 *   No changes.
@@ -196,6 +206,12 @@
 
 
 ## Rails 6.0.0.rc1 (April 24, 2019) ##
+
+*   Speed improvements to `Hash.except` and `HashWithIndifferentAccess#except`.
+
+    These methods now unset the `default`/`default_proc` on the returned Hash, compatible with Ruby 3.0’s native implementation.
+
+    *Timo Schilling*
 
 *   Introduce `ActiveSupport::ActionableError`.
 
